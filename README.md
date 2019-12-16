@@ -7,7 +7,11 @@ In this project i mainnly focussed on screen Adaptability (Check SizeConfig for 
 I also Started Some initial work for my next package (SlidingCard)
 ![alt text](https://github.com/PavieOlivier/doctor-appointment-flutter/raw/master/image/image.png)
 
+
+
 Here is a Gif of the app
+
+
 ![alt text](https://github.com/PavieOlivier/doctor-appointment-flutter/raw/master/image/demo.gif)
 
 ## Getting Started
