@@ -1,23 +1,62 @@
 import 'package:flutter/material.dart';
 
 class SlidingCardController {
+  ///This is to slide the card down
   Function expandCard;
+
+  ///This is to slide the card up
   Function collapseCard;
+
+  ///Whether the card is collapsed or not
   bool isCardSeparated;
 }
+
 ///THIS IS A WORK IN PROGRESS
 class SlidingCard extends StatefulWidget {
   final SlidingCardController controller;
+
+  ///Widget to be displayed on the front;
+  ///note that It's parent widget is a container
   final Widget frontCardWidget;
+
+  ///Widget to be displayed on the back
+  ///It's hight shhall be <= height of the front card;
+  ///Note that it's parent widget is a container
   final Widget backCardWidget;
+
+  ///Height of the front card
   final double visibleCardHeight;
+
+  ///height of the back card
   final double hiddenCardHeight;
+
+  ///width of the overal card
   final double slidingCardWidth;
+
+  ///Border radious of the card
   final double slimeCardBorderRadius;
+
+  ///The elevation of the SlimeCard
   final double slimeCardElevation;
+
+  ///The time it will take for the card to slide down
   final Duration slidingAnimmationDuration;
-  final Curve slidingAnimmationCurve;
+
+  ///The curve of the slidingAnimation when expanding
+  ///it is preferable to leave it to it's default value
+  final Curve slidingAnimmationForwardCurve;
+
+  ///The curve of the slidingAnimation when reserving
+  ///it is preferable to leave it to it's default value
+  final Curve slidingAnimationReverseCurve;
+
+  ///This gives a good visual effect
+  ///Leave this to true for a more realistic
   final bool animateOpacity;
+
+  /// this will enable coloring of the cards
+  /// use this to make sure your widgets are aligned properly
+  final bool showColors;
 
   ///The space between the 2 cards
   final double cardsGap;
@@ -29,12 +68,16 @@ class SlidingCard extends StatefulWidget {
       this.hiddenCardHeight = 100,
       this.animateOpacity = true,
       this.slimeCardElevation = 1,
-      this.slidingAnimmationCurve = Curves.elasticOut,
+      this.showColors = true,
+      this.slidingAnimmationForwardCurve = Curves.elasticOut,
+      this.slidingAnimationReverseCurve = Curves.elasticOut,
       this.slidingAnimmationDuration = const Duration(milliseconds: 800),
       @required this.controller,
       @required this.backCardWidget,
       @required this.frontCardWidget})
-      : assert(hiddenCardHeight <= visibleCardHeight, 'The height of the hidden card shall be either equal to the visible card height or less');
+      : assert(hiddenCardHeight <= (visibleCardHeight * 90) / 100,
+            'The height of the hidden card shall be less than or equal to 90% of the frontCard Widget ');
+
   @override
   _SlidingCardState createState() => _SlidingCardState();
 }
@@ -54,13 +97,11 @@ class _SlidingCardState extends State<SlidingCard>
       widget.controller.expandCard = expandCard;
       widget.controller.collapseCard = collapseCard;
       widget.controller.isCardSeparated = false;
-      print('not null');
+    } else {
+      print(
+          'Sliding Card: The controller is null, the sliding card action will not be triggered');
     }
-    else
-    {
-      print('The controller is null');
-    }
-    animationCurve = widget.slidingAnimmationCurve;
+    animationCurve = widget.slidingAnimmationForwardCurve;
     animationController =
         AnimationController(vsync: this, duration: Duration(milliseconds: 250));
     separatedValue =
@@ -71,30 +112,32 @@ class _SlidingCardState extends State<SlidingCard>
     });
     print(separatedValue.end);
   }
-  
+
   ///use this to expand the card
   void expandCard() {
-    //well we have to repeat this peace of code because it looks like in 
+    //well we have to repeat this peace of code because it looks like in
     //release mode , the app is too fast and the tween does not get registered fast
     separatedValue =
         Tween(begin: 0.0, end: widget.visibleCardHeight + widget.cardsGap);
-    animationCurve = widget.slidingAnimmationCurve;
+    animationCurve = widget.slidingAnimmationForwardCurve;
     animationValue = separatedValue.animate(animationController);
     animationController.forward();
     isSeparated = true;
     widget.controller.isCardSeparated = true;
-    Future.delayed(Duration(milliseconds: 500),(){
-      
-    });
-    
   }
 
   ///use this to colapse the card
   void collapseCard() {
-    //animationCurve = Curves.linear;
+    animationCurve = widget.slidingAnimationReverseCurve;
     animationController.reverse();
     isSeparated = false;
     widget.controller.isCardSeparated = false;
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    animationController.dispose();
   }
 
   @override
@@ -127,7 +170,7 @@ class _SlidingCardState extends State<SlidingCard>
                     width: widget.slidingCardWidth,
                     height: widget.hiddenCardHeight,
                     decoration: BoxDecoration(
-                        color: Colors.yellow,
+                        color: widget.showColors ? Colors.yellow : null,
                         borderRadius: BorderRadius.circular(
                             widget.slimeCardBorderRadius)),
                     child: widget.backCardWidget,
@@ -145,7 +188,7 @@ class _SlidingCardState extends State<SlidingCard>
               width: widget.slidingCardWidth,
               height: widget.visibleCardHeight,
               decoration: BoxDecoration(
-                  color: Colors.green,
+                  color: widget.showColors ? Colors.green : null,
                   borderRadius:
                       BorderRadius.circular(widget.slimeCardBorderRadius)),
               child: widget.frontCardWidget,

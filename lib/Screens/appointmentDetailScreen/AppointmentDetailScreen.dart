@@ -1,5 +1,6 @@
 import 'package:doctor_companion/WidgetComponents/ActionButton.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:doctor_companion/WidgetComponents/SlidingCard.dart';
 import 'package:doctor_companion/model/Appointment.dart';
 import 'package:doctor_companion/sizeConfig.dart';
 import 'package:flutter/material.dart';
@@ -96,6 +97,7 @@ class _AppointmentDetailScreenState extends State<AppointmentDetailScreen>
         child: SingleChildScrollView(
           child: Column(
             children: <Widget>[
+              
               Stack(
                 children: <Widget>[
                   AnimatedContainer(

@@ -28,6 +28,7 @@ class AppointmentCard extends StatelessWidget {
       },
           child: SlidingCard(
         slimeCardElevation: 0.5,
+       // slidingAnimationReverseCurve: Curves.bounceInOut,
         cardsGap: SizeConfig.safeBlockVertical,
         controller: slidingCardController,
         slidingCardWidth: SizeConfig.horizontalBloc * 90,
