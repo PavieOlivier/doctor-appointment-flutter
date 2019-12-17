@@ -2,7 +2,7 @@
 
 [Updated to AndroidX]
 
-In this project i mainnly focussed on screen Adaptability (Check SizeConfig for mode detail).
+In this project i mainly focussed on screen Adaptability (Check SizeConfig for mode detail).
 
 I also Started Some initial work for my next package (SlidingCard)
 ![alt text](https://github.com/PavieOlivier/doctor-appointment-flutter/raw/master/image/image.png)
